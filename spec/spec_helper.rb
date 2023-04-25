@@ -14,7 +14,9 @@ VCR.configure do |c|
     match_requests_on: [:method, :uri, VCRMultipartMatcher.new]
   }
   c.filter_sensitive_data("<STABILITYAI_ACCESS_TOKEN>") { StabilityAI.configuration.access_token }
-  c.filter_sensitive_data("<STABILITYAI_ORGANIZATION_ID>") { StabilityAI.configuration.organization_id }
+  c.filter_sensitive_data("<STABILITYAI_ORGANIZATION_ID>") do
+    StabilityAI.configuration.organization_id
+  end
 end
 
 RSpec.configure do |c|
@@ -30,7 +32,7 @@ RSpec.configure do |c|
 
   if ENV.fetch("STABILITYAI_ACCESS_TOKEN", nil)
     warning = "WARNING! Specs are hitting the StabilityAI API using your STABILITYAI_ACCESS_TOKEN! This
-costs at least 2 cents per run and is very slow! If you don't want this, unset
+costs at least 0.2 Credits (ca. $0.002) per run and is very slow! If you don't want this, unset
 STABILITYAI_ACCESS_TOKEN to just run against the stored VCR responses.".freeze
     warning = RSpec::Core::Formatters::ConsoleCodes.wrap(warning, :bold_red)
 
@@ -39,7 +41,7 @@ STABILITYAI_ACCESS_TOKEN to just run against the stored VCR responses.".freeze
   end
 
   c.before(:all) do
-    OpenAI.configure do |config|
+    StabilityAI.configure do |config|
       config.access_token = ENV.fetch("STABILITYAI_ACCESS_TOKEN", "dummy-token")
     end
   end

@@ -78,10 +78,10 @@ client = StabilityAI::Client.new(
 or when configuring the gem:
 
 ```ruby
-OpenAI.configure do |config|
+StabilityAI.configure do |config|
     config.access_token = ENV.fetch("STABILITYAI_ACCESS_TOKEN")
     config.organization_id = ENV.fetch("STABILITYAI_ORGANIZATION_ID") # Optional
-		config.engine_id = "/stable-diffusion-v1-5"
+    config.engine_id = "/stable-diffusion-v1-5"
     config.request_timeout = 240 # Optional
 end
 ```
@@ -129,21 +129,21 @@ Send a string and additional settings to create your image:
 
 ```ruby
 response = client.text_to_image(
-			parameters: {
-					text_prompts:  [
-						{
-							text: "A red candle"
-						}
-					],
-					cfg_scale: 7,
-					clip_guidance_preset: "FAST_BLUE",
-					height: 512,
-					width: 512,
-					samples: 1,
-					steps: 30
-			}
-		)
-		data = response.dig("artifacts", 0, "base64")
+	parameters: {
+        	text_prompts:  [
+        		{
+        		 text: "A red candle"
+        		}
+        	],
+        	cfg_scale: 7,
+        	clip_guidance_preset: "FAST_BLUE",
+        	height: 512,
+        	width: 512,
+        	samples: 1,
+        	steps: 30
+		}
+	)
+data = response.dig("artifacts", 0, "base64")
 # => Outputs base64 string, which can be used in an image tag like this <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAACEmVYSWZNTQAq..."">
 ```
 

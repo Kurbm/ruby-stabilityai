@@ -1,5 +1,5 @@
 # Ruby Stability.ai
-
+[![Gem Version](https://badge.fury.io/rb/ruby-stabilityai.svg)](https://badge.fury.io/rb/ruby-stabilityai)
 [![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/kurbm/ruby-stabilityai/blob/main/LICENSE.txt)
 
 Use the [Stability.ai API](https://platform.stability.ai/) with Ruby! 🤖❤️
@@ -128,6 +128,7 @@ puts response
 Send a string and additional settings to create your image:
 
 ```ruby
+client = StabilityAI::Client.new(engine_id: "/stable-diffusion-xl-beta-v2-2-2")
 response = client.text_to_image(
 			parameters: {
 					text_prompts:  [
@@ -207,3 +208,138 @@ response = client.text_to_image(
 	- tile-texture
 
 More information can be found here: [Stability AI Text to Image](https://platform.stability.ai/rest-api#tag/v1generation/operation/textToImage)
+
+
+### Image to Image
+
+Create n variations of an image.
+
+```ruby
+client = StabilityAI::Client.new(engine_id: "/stable-diffusion-xl-beta-v2-2-2")
+response = client.images.image_to_image(
+			parameters: {
+				image_strength: 0.35,
+				init_image_mode: "IMAGE_STRENGTH",
+				init_image: "image.png",
+				"text_prompts[0][text]": "A dog space commanger",
+				"text_prompts[0][weight]": 1,
+				cfg_scale: 7,
+				samples: 1,
+				steps: 30,
+				style_preset: "origami"
+			}
+		)
+		data = response.dig("artifacts", 0, "base64")
+# => Outputs base64 string, which can be used in an image tag like this <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAACEmVYSWZNTQAq..."">
+```
+
+Original Image:
+
+![Ruby](https://i.ibb.co/cxvwPv8/Flamingo-Variation-original.png)
+
+Image variation:
+
+![Ruby](https://i.ibb.co/28T2Bt8/Flamingo-Variations.png)
+
+
+### Parameters, which can be set
+
+- text_prompts (required)
+- cfg_scale
+  - Default: 7
+	- Between 0 and 35
+- init_image (required)
+- init_image_mode
+  - image_strength
+	- step_schedule_*
+	  - step_schedule_start
+		  - Default: 0.65
+			- Between 0 and 1
+		- step_schedule_end
+			- Between 0 and 1
+- clip_guidance_preset
+  - Default: None
+	- FAST_BLUE
+	- FAST_GREEN
+	- NONE
+	- SIMPLE
+	- SLOW
+	- SLOWER
+	- SLOWEST
+- sampler
+  - DDIM
+	- DDPM
+	- K_DPMPP_2M
+	- K_DPMPP_2S_ANCESTRAL
+	- K_DPM_2
+	- K_DPM_2_ANCESTRAL
+	- K_EULER
+	- K_EULER_ANCESTRAL
+	- K_HEUN
+	- K_LMS
+- samples (Number of images to generate)
+  - Default: 1
+	- Between 1 and 10
+- seed
+  - Default: 0
+	- Random noise seed (omit this option or use 0 for a random seed)
+- steps
+  - Default: 50
+	- Between: 10 and 150
+	- Number of diffusion steps to run
+- style_preset
+  - 3d-model
+	- analog-film
+	- anime
+	- cinematic
+	- comic-book
+	- digital-art
+	- enhance
+	- fantasy-art
+	- isometric
+	- line-art
+	- low-poly
+	- modeling-compound
+	- neon-punk
+	- origami
+	- photographic
+	- pixel-art
+	- tile-texture
+
+More information can be found here: [Stability AI Image to Image](https://platform.stability.ai/rest-api#tag/v1generation/operation/imageToImage)
+
+
+### Upscale an image
+
+Create a higher resolution version of an input image.
+
+By default, the input image will be upscaled by a factor of 2. For additional control over the output dimensions, a width or height parameter may be specified.
+
+Engine Id to be used: "esrgan-v1-x2plus"
+
+```ruby
+client = StabilityAI::Client.new(engine_id: "/esrgan-v1-x2plus")
+response = client.images.upscale(
+			parameters: {
+				image: "image.png"
+			}
+		)
+		data = response.dig("artifacts", 0, "base64")
+# => Outputs base64 string, which can be used in an image tag like this <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAgAAAAIACAIAAAB7GkOtAAACEmVYSWZNTQAq..."">
+```
+
+Original Image:
+
+![Ruby](https://i.ibb.co/4mvDFG3/flamingo.png)
+
+Upscaled Image:
+
+![Ruby](https://i.ibb.co/y6J01J7/flamingo-upscale.png)
+
+### Parameters, which can be set
+
+- image (required)
+- height
+- width
+
+More information can be found here: [Stability AI Image Upscale](https://platform.stability.ai/rest-api#tag/v1generation/operation/upscaleImage)

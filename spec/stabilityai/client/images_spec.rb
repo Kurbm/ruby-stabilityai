@@ -34,5 +34,25 @@ RSpec.describe StabilityAI::Client do
         end
       end
     end
+
+		describe "#upscale", :vcr do
+      let(:response) do
+        StabilityAI::Client.new(engine_id: "/esrgan-v1-x2plus").images.upscale(
+          parameters: {
+						image: image
+          }
+        )
+      end
+      let(:cassette) { "images upscale #{image_filename}" }
+      let(:image) { File.join(RSPEC_ROOT, "fixtures/files", image_filename) }
+      let(:image_filename) { "image.png" }
+
+      it "succeeds" do
+        VCR.use_cassette(cassette, preserve_exact_body_bytes: true) do
+          r = JSON.parse(response.body)
+          expect(r.dig("artifacts", 0)).to include("finishReason")
+        end
+      end
+    end
   end
 end

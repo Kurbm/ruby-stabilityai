@@ -13,10 +13,14 @@ module StabilityAI
       StabilityAI::Client.multipart_post(path: "/image-to-image", parameters: open_files(parameters))
     end
 
+		def upscale(parameters: {})
+      StabilityAI::Client.multipart_post(path: "/image-to-image/upscale", parameters: open_files(parameters))
+    end
     private
 
     def open_files(parameters)
-      parameters = parameters.merge(init_image: File.open(parameters[:init_image]))
+      parameters = parameters.merge(init_image: File.open(parameters[:init_image])) if parameters[:init_image]
+			parameters = parameters.merge(image: File.open(parameters[:image])) if parameters[:image]
       parameters = parameters.merge(mask: File.open(parameters[:mask])) if parameters[:mask]
       parameters
     end

@@ -15,7 +15,7 @@ RSpec.describe StabilityAI::Client do
 						width: width,
 						samples: samples,
 						steps: steps,
-						style_presets: style_presets
+						style_preset: style_presets
           }
         )
       end

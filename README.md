@@ -78,7 +78,7 @@ client = StabilityAI::Client.new(
 or when configuring the gem:
 
 ```ruby
-OpenAI.configure do |config|
+StabilityAI.configure do |config|
     config.access_token = ENV.fetch("STABILITYAI_ACCESS_TOKEN")
     config.organization_id = ENV.fetch("STABILITYAI_ORGANIZATION_ID") # Optional
 		config.engine_id = "/stable-diffusion-v1-5"

@@ -14,6 +14,14 @@ module StabilityAI
       StabilityAI::Client.json_post(path: "/text-to-image", parameters: parameters)
     end
 
+		# def image_to_image(parameters: open_files(parameters))
+    #   StabilityAI::Client.multipart_post(path: "/image-to-image", parameters: parameters)
+    # end
+
+		def images
+      @images ||= StabilityAI::Images.new
+    end
+
     def engines
       StabilityAI::Client.get(path: "/engines/list")
     end

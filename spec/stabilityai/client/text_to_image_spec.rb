@@ -1,8 +1,8 @@
 RSpec.describe StabilityAI::Client do
   describe "#images" do
-    describe "#generate", :vcr do
+    describe "#text-to-image", :vcr do
       let(:response) do
-        StabilityAI::Client.new.text_to_image(
+        StabilityAI::Client.new(engine_id: "/stable-diffusion-xl-beta-v2-2-2").text_to_image(
           parameters: {
             text_prompts:  [
 							{
@@ -15,11 +15,11 @@ RSpec.describe StabilityAI::Client do
 						width: width,
 						samples: samples,
 						steps: steps,
-						style_presets: style_presets
+						style_preset: style_preset
           }
         )
       end
-      let(:cassette) { "images generate #{prompt}" }
+      let(:cassette) { "images text to image #{prompt}" }
       let(:prompt) { "A sunlit indoor lounge area with a pool containing a flamingo" }
       let(:size) { "256x256" }
       let(:cfg_scale) { 7 }
@@ -27,8 +27,8 @@ RSpec.describe StabilityAI::Client do
       let(:height) { 512 }
       let(:width) { 512 }
       let(:samples) { 1 }
-      let(:steps) { 30 }
-			let(:style_presets) { "origami" }
+      let(:steps) { 10 }
+			let(:style_preset) { "origami" }
 
       it "succeeds" do
         VCR.use_cassette(cassette) do

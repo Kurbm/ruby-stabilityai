@@ -26,6 +26,4 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency "httparty", ">= 0.18.1"
-
-  spec.post_install_message = "Note if upgrading: The `::Ruby::StabilityAI` module has been removed and all classes have been moved under the top level `::StabilityAI` module. To upgrade, change `require 'ruby/stabilityai'` to `require 'stabilityai'` and change all references to `Ruby::StabilityAI` to `StabilityAI`."
 end

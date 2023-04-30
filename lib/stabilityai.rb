@@ -2,6 +2,7 @@ require "httparty"
 
 require_relative "stabilityai/client"
 require_relative "stabilityai/version"
+require_relative "stabilityai/images"
 
 module StabilityAI
   class Error < StandardError; end

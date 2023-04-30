@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby-stabilityai (0.0.1)
+    ruby-stabilityai (0.0.2)
       httparty (>= 0.18.1)
 
 GEM
